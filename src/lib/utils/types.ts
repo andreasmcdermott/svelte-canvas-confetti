@@ -1,3 +1,6 @@
+export type ParticleStyle = string | HTMLImageElement;
+export type Position = [number, number];
+
 export type Particle = {
 	dead: boolean;
 	life: number;
@@ -9,11 +12,10 @@ export type Particle = {
 	dy: number;
 	w: number;
 	h: number;
-	color: string;
 	gx: number;
 	gy: number;
 	xw: number;
-	img?: HTMLImageElement;
+	style: ParticleStyle;
 };
 
 export type OnCreateParticle = (p: Particle) => Particle;

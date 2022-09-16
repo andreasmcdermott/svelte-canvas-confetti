@@ -11,6 +11,7 @@
 		type OnCreateParticle,
 		type OnUpdateParticle
 	} from '$lib';
+	import type { ParticleStyle, Position } from '$lib/utils/types';
 
 	let counter = 0;
 	let particleCount = Math.floor(random(100, 1));
@@ -34,7 +35,7 @@
 
 	let parachutes: {
 		id: number;
-		images: HTMLImageElement[];
+		styles: ParticleStyle[];
 		particleCount: number;
 		onCreate: OnCreateParticle;
 		onUpdate: OnUpdateParticle;
@@ -44,7 +45,7 @@
 			...parachutes,
 			{
 				id: counter++,
-				images: [img],
+				styles: [img],
 				particleCount,
 				onCreate: (p: Particle) => {
 					p.angle = 0;
@@ -52,7 +53,7 @@
 					p.da = random(35, -35);
 					return p;
 				},
-				onUpdate: (p: Particle, dt: number) => {
+				onUpdate: (p: Particle) => {
 					if (p.angle > 35 && p.da > 0) {
 						p.da *= -1;
 					} else if (p.angle < -35 && p.da < 0) {
@@ -63,15 +64,17 @@
 		];
 	};
 
-	let confettiBursts: { id: number; particleCount: number; x0: number; y0: number }[] = [];
+	let confettiBursts: { id: number; particleCount: number; origin: Position }[] = [];
 	const triggerConfettiBurst = () => {
 		confettiBursts = [
 			...confettiBursts,
 			{
 				id: counter++,
 				particleCount,
-				x0: random((window.innerWidth / 4) * 3, window.innerWidth / 4),
-				y0: random((window.innerHeight / 4) * 3, window.innerHeight / 4)
+				origin: [
+					random((window.innerWidth / 4) * 3, window.innerWidth / 4),
+					random((window.innerHeight / 4) * 3, window.innerHeight / 4)
+				]
 			}
 		];
 	};
@@ -82,8 +85,7 @@
 		spread: number;
 		angle: number;
 		force: number;
-		x0: number;
-		y0: number;
+		origin: Position;
 	}[] = [];
 	const triggerConfettiCannon = () => {
 		const left = coinFlip();
@@ -93,11 +95,10 @@
 			{
 				id: counter++,
 				particleCount,
-				spread: random(90, 45),
+				spread: random(90, 25),
 				angle: random(65, 25) + (left ? 270 : 180),
 				force: random(55, 25),
-				x0: left ? 0 : window.innerWidth,
-				y0: window.innerHeight
+				origin: [left ? 0 : window.innerWidth, window.innerHeight]
 			}
 		];
 	};
@@ -135,10 +136,10 @@
 		/>
 	{/each}
 
-	{#each parachutes as { id, particleCount, images, onCreate, onUpdate } (id)}
+	{#each parachutes as { id, particleCount, styles, onCreate, onUpdate } (id)}
 		<FallingConfetti
 			{particleCount}
-			{images}
+			{styles}
 			{onCreate}
 			{onUpdate}
 			on:completed={() => {
@@ -147,10 +148,9 @@
 		/>
 	{/each}
 
-	{#each confettiBursts as { id, x0, y0, particleCount } (id)}
+	{#each confettiBursts as { id, origin, particleCount } (id)}
 		<ConfettiBurst
-			{x0}
-			{y0}
+			{origin}
 			{particleCount}
 			on:completed={() => {
 				confettiBursts = confettiBursts.filter((c) => c.id !== id);
@@ -158,10 +158,9 @@
 		/>
 	{/each}
 
-	{#each confettiCannons as { id, x0, y0, angle, spread, force, particleCount } (id)}
+	{#each confettiCannons as { id, origin, angle, spread, force, particleCount } (id)}
 		<ConfettiCannon
-			{x0}
-			{y0}
+			{origin}
 			{angle}
 			{spread}
 			{force}

@@ -1,16 +1,14 @@
 import { BOUNDARY, DEG_TO_RAD, MOVEMENT_SPEED, ROTATION_SPEED } from './constants';
 import { random } from './random';
-import type { OnCreateParticle, Particle } from './types';
+import type { OnCreateParticle, Particle, Position } from './types';
 
 export const createParticle = (
 	context: CanvasRenderingContext2D,
-	x0: number | undefined,
-	y0: number | undefined,
+	origin: Position | undefined,
 	force: number,
 	angle: number,
 	spread: number,
-	colors: string[],
-	images?: HTMLImageElement[],
+	styles: (HTMLImageElement | string)[],
 	onCreate?: OnCreateParticle
 ) => {
 	let dir,
@@ -20,17 +18,13 @@ export const createParticle = (
 		vy,
 		dx,
 		dy,
-		img,
+		style = styles[Math.floor(random(styles.length))],
 		da = random(90, -90);
 
-	if (images) {
-		img = images[Math.floor(random(images.length))];
-	}
-
-	if (typeof x0 === 'number' && typeof y0 === 'number') {
+	if (origin) {
 		// When we have an origin, we create a confetti burst
-		x = x0;
-		y = y0;
+		x = origin[0];
+		y = origin[1];
 		vx = random(force, 5);
 		vy = random(force, 5);
 		dir = random(angle + spread / 2, angle - spread / 2) * DEG_TO_RAD;
@@ -58,11 +52,10 @@ export const createParticle = (
 		dy: dy * vy,
 		w: random(18, 10),
 		h: random(6, 4),
-		color: colors[Math.floor(random(colors.length))],
 		gx: 0,
 		gy: random(4.5, 2),
 		xw: random(6, 1),
-		img
+		style
 	};
 
 	if (onCreate) particle = onCreate(particle);
@@ -72,12 +65,12 @@ export const createParticle = (
 export const renderParticle = (context: CanvasRenderingContext2D, p: Particle) => {
 	if (p.dead) return;
 	context.save();
-	context.fillStyle = p.color;
 	context.translate(p.x, p.y);
 	context.rotate(p.angle * DEG_TO_RAD);
-	if (p.img) {
-		context.drawImage(p.img, -p.img.width / 2, -p.img.height / 2);
+	if (p.style instanceof HTMLImageElement) {
+		context.drawImage(p.style, -p.style.width / 2, -p.style.height / 2);
 	} else {
+		context.fillStyle = p.style;
 		context.beginPath();
 		context.rect(p.w * -0.5, p.h * -0.5, p.w, p.h);
 		context.fill();
