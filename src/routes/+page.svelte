@@ -48,6 +48,7 @@
 				particleCount,
 				onCreate: (p: Particle) => {
 					p.angle = 0;
+					p.gy = 2;
 					p.da = random(35, -35);
 					return p;
 				},
