@@ -1,28 +1,7 @@
 <script lang="ts" context="module">
-	import { random } from './random';
-
-	type Particle = {
-		dead: boolean;
-		life: number;
-		x: number;
-		y: number;
-		angle: number;
-		da: number;
-		dx: number;
-		dy: number;
-		w: number;
-		h: number;
-		color: string;
-		gx: number;
-		gy: number;
-		xw: number;
-	};
-
-	const DEG_TO_RAD = Math.PI / 180;
-	const ROTATION_SPEED = 2;
-	const MOVEMENT_SPEED = 1;
-	const BOUNDARY = 20;
-	const COLORS = ['red', 'yellow', 'skyblue', 'lime', 'orange'];
+	import { random } from './utils/random';
+	import type { OnCreateParticle, OnUpdateParticle, Particle } from './utils/types';
+	import { DEG_TO_RAD, ROTATION_SPEED, MOVEMENT_SPEED, BOUNDARY, COLORS } from './utils/constants';
 
 	const createParticle = (
 		context: CanvasRenderingContext2D,
@@ -30,9 +9,16 @@
 		y0: number | undefined,
 		force: number,
 		angle: number,
-		spread: number
+		spread: number,
+		colors: string[],
+		images?: HTMLImageElement[],
+		onCreate?: OnCreateParticle
 	) => {
-		let dir, x, y, vx, vy, dx, dy;
+		let dir, x, y, vx, vy, dx, dy, img;
+
+		if (images) {
+			img = images[Math.floor(random(images.length))];
+		}
 
 		if (typeof x0 === 'number' && typeof y0 === 'number') {
 			x = x0;
@@ -51,7 +37,7 @@
 		dx = Math.cos(dir);
 		dy = Math.sin(dir);
 
-		return {
+		let particle: Particle = {
 			dead: false,
 			life: 0,
 			x,
@@ -60,21 +46,21 @@
 			da: random(90, -90),
 			dx: dx * vx,
 			dy: dy * vy,
-			w: random(12, 8),
-			h: random(6, 2),
-			color: COLORS[Math.floor(random(COLORS.length))],
+			w: random(18, 10),
+			h: random(6, 4),
+			color: colors[Math.floor(random(colors.length))],
 			gx: 0,
 			gy: random(4.5, 2),
-			xw: random(6, 1)
+			xw: random(6, 1),
+			img
 		};
+
+		if (onCreate) particle = onCreate(particle);
+		return particle;
 	};
 
 	const renderParticles = (context: CanvasRenderingContext2D, particles: Particle[]) => {
 		context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-
-		context.shadowColor = 'rgba(0, 0, 0, 0.5)';
-		context.shadowBlur = 0.5;
-		context.shadowOffsetY = 1;
 
 		for (let i = 0; i < particles.length; ++i) {
 			const p = particles[i];
@@ -83,9 +69,13 @@
 			context.fillStyle = p.color;
 			context.translate(p.x, p.y);
 			context.rotate(p.angle * DEG_TO_RAD);
-			context.beginPath();
-			context.rect(p.w * -0.5, p.h * -0.5, p.w, p.h);
-			context.fill();
+			if (p.img) {
+				context.drawImage(p.img, -p.img.width / 2, -p.img.height / 2);
+			} else {
+				context.beginPath();
+				context.rect(p.w * -0.5, p.h * -0.5, p.w, p.h);
+				context.fill();
+			}
 			context.restore();
 		}
 	};
@@ -93,12 +83,13 @@
 	const updateParticles = (
 		context: CanvasRenderingContext2D,
 		particles: Particle[],
-		dt: number
+		dt: number,
+		onUpdate?: OnUpdateParticle
 	) => {
 		let livingParticles = particles.length;
 
 		for (let i = 0; i < particles.length; ++i) {
-			const p = particles[i];
+			let p = particles[i];
 			if (p.dead) {
 				livingParticles--;
 				continue;
@@ -120,6 +111,8 @@
 			) {
 				p.dead = true;
 			}
+
+			if (onUpdate) onUpdate(p, dt);
 		}
 
 		return livingParticles > 0;
@@ -133,19 +126,23 @@
 		y0: number | undefined,
 		force: number,
 		angle: number,
-		spread: number
+		spread: number,
+		colors: string[],
+		images?: HTMLImageElement[],
+		onCreate?: OnCreateParticle,
+		onUpdate?: OnUpdateParticle
 	) => {
 		const context = canvas.getContext('2d');
 		if (!context) throw new Error('No context?');
 		const particles: Particle[] = Array.from({ length: particleCount }, () =>
-			createParticle(context, x0, y0, force, angle, spread)
+			createParticle(context, x0, y0, force, angle, spread, colors, images, onCreate)
 		);
 
 		let frameId: number, t: number;
 
 		const run = (_t: number) => {
 			renderParticles(context, particles);
-			const stillRunning = updateParticles(context, particles, (_t - t) / 1e3);
+			const stillRunning = updateParticles(context, particles, (_t - t) / 1e3, onUpdate);
 			if (stillRunning) {
 				t = _t;
 				frameId = requestAnimationFrame(run);
@@ -168,12 +165,16 @@
 <script lang="ts">
 	import { onMount, createEventDispatcher } from 'svelte';
 
+	export let colors = COLORS;
+	export let images: HTMLImageElement[] | undefined = undefined;
 	export let particleCount = 50;
 	export let x0: number | undefined = undefined;
 	export let y0: number | undefined = undefined;
 	export let force = 15;
 	export let angle = 0;
 	export let spread = 360;
+	export let onCreate: OnCreateParticle | undefined = undefined;
+	export let onUpdate: OnUpdateParticle | undefined = undefined;
 
 	const dispatch = createEventDispatcher();
 	let canvas: HTMLCanvasElement;
@@ -190,7 +191,11 @@
 			y0,
 			force,
 			angle,
-			spread
+			spread,
+			colors,
+			images,
+			onCreate,
+			onUpdate
 		);
 		return start();
 	});
