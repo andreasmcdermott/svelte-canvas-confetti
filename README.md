@@ -26,7 +26,7 @@ The package includes four Svelte components.
 
 Adds confetti falling from the top of the screen.
 
-```
+```svelte
 <script>
 	import { FallingConfetti } from 'svelte-canvas-confetti';
 </script>
@@ -38,7 +38,7 @@ Adds confetti falling from the top of the screen.
 
 Adds a confetti burst anywhere on the screen. It requires an origin position.
 
-```
+```svelte
 <script>
 	import { ConfettiBurst } from 'svelte-canvas-confetti';
 </script>
@@ -50,7 +50,7 @@ Adds a confetti burst anywhere on the screen. It requires an origin position.
 
 Adds a confetti cannon that can shoot out directional confetti. It requires an origin position.
 
-```
+```svelte
 <script>
 	import { ConfettiCannon } from 'svelte-canvas-confetti';
 </script>
@@ -64,7 +64,7 @@ Adds any type of confetti. This is the main component that the other three are j
 
 If no properties are passed in, it will create the same result as **FallingConfetti**.
 
-```
+```svelte
 <script>
 	import { Confetti } from 'svelte-canvas-confetti';
 </script>
@@ -82,7 +82,7 @@ Number of particles to create.
 **Default value:** `50`
 **Example:**
 
-```
+```svelte
 <Confetti particleCount={100} />
 ```
 
@@ -94,7 +94,7 @@ A list of styles used to render particles. Can be any valid HTML color or an HTM
 **Default value:** `['hotpink','gold','dodgerblue','tomato','rebeccapurple','lightgreen','turquoise']`
 **Example:**
 
-```
+```svelte
 <Confetti styles={['red', '#00ff00', 'hsl(120, 65%, 85%)']} />
 ```
 
@@ -106,7 +106,7 @@ The origin of the particles. If this is not used, the particles will fall from t
 **Default value:** `undefined`
 **Example:**
 
-```
+```svelte
 <Confetti origin={[100, 100]} />
 ```
 
@@ -118,7 +118,7 @@ The initial force used to shoot out confetti. This has no effect if `origin` is 
 **Default value:** 15
 **Example:**
 
-```
+```svelte
 <Confetti origin={[50, 50]} force={25} />
 ```
 
@@ -130,7 +130,7 @@ The angle used to shoot out confetti. This has no effect if `origin` is not used
 **Default value:** 0
 **Example:**
 
-```
+```svelte
 <Confetti origin={[50, 50]} angle={90} />
 ```
 
@@ -142,7 +142,7 @@ The spread used when creating each particles initial direction. The particle's i
 **Default value:** 360
 **Example:**
 
-```
+```svelte
 <Confetti origin={[100, 100]} spread={45} />
 ```
 
@@ -154,7 +154,7 @@ This can be used to override the properties of each particle at creation time.
 **Default value:** undefined
 **Example:**
 
-```
+```svelte
 <Confetti 
   onCreate={(particle) => {
     particle.x = 0;
@@ -172,7 +172,7 @@ This can be used to override the properties of each particle at update time.
 **Default value:** undefined
 **Example:**
 
-```
+```svelte
 <Confetti 
   onCreate={(particle) => {
     particle.x += Math.random() * 5;
