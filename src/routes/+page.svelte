@@ -54,9 +54,7 @@
 					return p;
 				},
 				onUpdate: (p: Particle) => {
-					if (p.angle > 35 && p.da > 0) {
-						p.da *= -1;
-					} else if (p.angle < -35 && p.da < 0) {
+					if ((p.angle > 35 && p.da > 0) || (p.angle < -35 && p.da < 0)) {
 						p.da *= -1;
 					}
 				}

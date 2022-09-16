@@ -176,6 +176,54 @@ This can be used to override the properties of each particle at update time.
 />
 ```
 
+## Particle object
+
+```ts
+export type Particle = {
+  // Stop updating/rendering the particle once it is "dead" (ie off screen) 
+	dead: boolean;
+  
+  // The total time since the particle was created.
+	life: number;
+  
+  // The delay between the creation of the particle and when it starts updating/rendering (in seconds).
+	delay: number;
+
+  // The x position of the particle.
+	x: number;
+
+  // The y position of the particle.
+	y: number;
+
+  // The current angle of the particle.
+	angle: number;
+
+  // The rotation speed of the particle.
+	da: number;
+
+  // The horizontal speed of the particle.
+	dx: number;
+
+  // The vertical speed of the particle.
+	dy: number;
+
+  // The width of the particle (not used with images).
+	w: number;
+
+  // The height of the particle (not used with images).
+	h: number;
+
+  // Vertical gravity.
+	gy: number;
+
+  // The "width" of the falling motion. The falling motion is calculated as Math.sin(life * xw)
+	xw: number;
+
+  // The style of the particle. Either an HTML color or an HTMLImageElement.
+	style: ParticleStyle;
+};
+```
+
 ## Examples
 
 * [Advanced Example](https://svelte.dev/repl/32552f9527e54eafb2e6d95af183212b?version=3.50.1)

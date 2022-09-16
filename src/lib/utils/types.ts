@@ -13,7 +13,6 @@ export type Particle = {
 	dy: number;
 	w: number;
 	h: number;
-	gx: number;
 	gy: number;
 	xw: number;
 	style: ParticleStyle;

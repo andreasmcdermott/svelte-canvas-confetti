@@ -53,7 +53,6 @@ export const createParticle = (
 		dy: dy * vy,
 		w: random(18, 10),
 		h: random(6, 4),
-		gx: 0,
 		gy: random(4.5, 2),
 		xw: random(6, 1),
 		style
