@@ -6,7 +6,11 @@
 * Supports image-based confetti.
 * Allows full customization of confetti behavior using `onCreate` and `onUpdate` hooks.
 
-[Try it in the Svelte REPL](https://svelte.dev/repl/651daab486674a71a750b711aac76a7d?version=3.50.1)
+## Examples
+
+[Simple Demo](https://svelte.dev/repl/651daab486674a71a750b711aac76a7d?version=3.50.1)
+
+[Advanced Demo](https://svelte.dev/repl/32552f9527e54eafb2e6d95af183212b?version=3.50.1)
 
 ## Installing
 
@@ -223,10 +227,6 @@ export type Particle = {
 	style: ParticleStyle;
 };
 ```
-
-## Examples
-
-* [Advanced Example](https://svelte.dev/repl/32552f9527e54eafb2e6d95af183212b?version=3.50.1)
 
 ## License
 
