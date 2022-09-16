@@ -44,6 +44,7 @@ export const createParticle = (
 	let particle: Particle = {
 		dead: false,
 		life: 0,
+		delay: 0,
 		x,
 		y,
 		angle: random(360),
@@ -63,7 +64,7 @@ export const createParticle = (
 };
 
 export const renderParticle = (context: CanvasRenderingContext2D, p: Particle) => {
-	if (p.dead) return;
+	if (p.dead || p.life < p.delay) return;
 	context.save();
 	context.translate(p.x, p.y);
 	context.rotate(p.angle * DEG_TO_RAD);
@@ -79,8 +80,8 @@ export const renderParticle = (context: CanvasRenderingContext2D, p: Particle) =
 };
 
 export const updateParticle = (p: Particle, dt: number) => {
-	if (p.dead) return;
 	p.life += dt;
+	if (p.dead || p.life < p.delay) return;
 	p.angle += p.da * dt * ROTATION_SPEED;
 	p.dy += p.gy * dt * ROTATION_SPEED;
 	p.dx += random(4, 2) * Math.sin(p.life * p.xw) * dt;

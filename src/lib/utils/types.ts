@@ -4,6 +4,7 @@ export type Position = [number, number];
 export type Particle = {
 	dead: boolean;
 	life: number;
+	delay: number;
 	x: number;
 	y: number;
 	angle: number;

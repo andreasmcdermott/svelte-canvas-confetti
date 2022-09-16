@@ -106,7 +106,7 @@
 	 */
 	export let particleCount = 50;
 	/**
-	 * The initial position of the confetti burst. If this is not passed in, the confetti will fall from the top of the screen.
+	 * The origin position of the confetti. If this is not passed in, the confetti will fall from the top of the screen.
 	 * @default undefined
 	 * @example
 	 * ```
