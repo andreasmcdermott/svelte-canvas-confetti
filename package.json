@@ -1,6 +1,22 @@
 {
-	"name": "@amcd/svelte-canvas-confetti",
-	"version": "0.0.1",
+	"name": "svelte-canvas-confetti",
+	"version": "0.5.0",
+	"description": "Canvas-based confetti for Svelte",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/andreasmcdermott/svelte-canvas-confetti/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/andreasmcdermott/svelte-canvas-confetti.git"
+	},
+  "svelte": "./index.js",
+	"keywords": [
+		"svelte",
+		"sveltekit",
+		"confetti",
+		"canvas"
+	],
 	"scripts": {
 		"dev": "vite dev",
 		"build": "svelte-kit sync && svelte-package",
