@@ -28,7 +28,7 @@ Adds confetti falling from the top of the screen.
 
 ```svelte
 <script>
-	import { FallingConfetti } from 'svelte-canvas-confetti';
+  import { FallingConfetti } from 'svelte-canvas-confetti';
 </script>
 
 <FallingConfetti />
@@ -40,7 +40,7 @@ Adds a confetti burst anywhere on the screen. It requires an origin position.
 
 ```svelte
 <script>
-	import { ConfettiBurst } from 'svelte-canvas-confetti';
+  import { ConfettiBurst } from 'svelte-canvas-confetti';
 </script>
 
 <ConfettiBurst origin={[window.innerWidth / 2, window.innerHeight / 2]} />
@@ -52,7 +52,7 @@ Adds a confetti cannon that can shoot out directional confetti. It requires an o
 
 ```svelte
 <script>
-	import { ConfettiCannon } from 'svelte-canvas-confetti';
+  import { ConfettiCannon } from 'svelte-canvas-confetti';
 </script>
 
 <ConfettiCannon origin={[window.innerWidth / 2, window.innerHeight]} />
@@ -66,7 +66,7 @@ If no properties are passed in, it will create the same result as **FallingConfe
 
 ```svelte
 <script>
-	import { Confetti } from 'svelte-canvas-confetti';
+  import { Confetti } from 'svelte-canvas-confetti';
 </script>
 
 <Confetti />
@@ -185,46 +185,46 @@ This can be used to override the properties of each particle at update time.
 ```ts
 export type Particle = {
   // Stop updating/rendering the particle once it is "dead" (ie off screen) 
-	dead: boolean;
+  dead: boolean;
   
   // The total time since the particle was created.
-	life: number;
+  life: number;
   
   // The delay between the creation of the particle and when it starts updating/rendering (in seconds).
-	delay: number;
+  delay: number;
 
   // The x position of the particle.
-	x: number;
+  x: number;
 
   // The y position of the particle.
-	y: number;
+  y: number;
 
   // The current angle of the particle.
-	angle: number;
+  angle: number;
 
   // The rotation speed of the particle.
-	da: number;
+  da: number;
 
   // The horizontal speed of the particle.
-	dx: number;
+  dx: number;
 
   // The vertical speed of the particle.
-	dy: number;
+  dy: number;
 
   // The width of the particle (not used with images).
-	w: number;
+  w: number;
 
   // The height of the particle (not used with images).
-	h: number;
+  h: number;
 
   // Vertical gravity.
-	gy: number;
+  gy: number;
 
   // The "width" of the falling motion. The falling motion is calculated as Math.sin(life * xw)
-	xw: number;
+  xw: number;
 
   // The style of the particle. Either an HTML color or an HTMLImageElement.
-	style: ParticleStyle;
+  style: ParticleStyle;
 };
 ```
 
