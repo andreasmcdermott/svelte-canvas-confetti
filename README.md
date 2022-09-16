@@ -12,7 +12,7 @@
 
 [Firework Demo](https://svelte.dev/repl/abee117c2a8848c68299d00605529b66?version=3.50.1)
 
-[Custom Image Demo](https://svelte.dev/repl/32552f9527e54eafb2e6d95af183212b?version=3.50.1)
+[Advanced Demo](https://svelte.dev/repl/32552f9527e54eafb2e6d95af183212b?version=3.50.1)
 
 ## Installing
 
