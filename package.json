@@ -1,6 +1,7 @@
 {
 	"name": "svelte-canvas-confetti",
 	"version": "0.6.0",
+	"author": "Andreas McDermott",
 	"description": "Canvas-based confetti for Svelte",
 	"license": "MIT",
 	"bugs": {
